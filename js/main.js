@@ -3,7 +3,7 @@ const taskNameElement = document.querySelector('#taskname');
 const taskDateElement = document.querySelector('#taskdate');
 const taskTimeElement = document.querySelector('#tasktime');
 const taskListElement = document.querySelector('#taskList');
-const AllTasks = [];
+let AllTasks = [];
 
 function addTask() {
     const taskName = taskNameElement.value;
@@ -16,17 +16,23 @@ function addTask() {
             time: taskTime
         };
         AllTasks.push(Task);
+        localStorage.setItem("allTasks", JSON.stringify(AllTasks));
         taskNameElement.value = "";
         taskDateElement.value = "";
         taskTimeElement.value = "";
         alert("Task Added")
-        // refreshList();
+        refreshList();
     }
 }
 
 function refreshList() {
+    AllTasks = JSON.parse(localStorage.getItem("allTasks"));
+    if (!AllTasks) {
+        AllTasks = [];
+        localStorage.setItem("allTasks", JSON.stringify([]));
+    }
     taskListElement.innerHTML = "";
-    for (let i = 0; i < AllTasks.length; i++) {        
+    for (let i = 0; i < AllTasks.length; i++) {
         taskListElement.innerHTML += `<li class="list-group-item">
                                             <span class="float-right badge badge-danger">
                                                 &times;
